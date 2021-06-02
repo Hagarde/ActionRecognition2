@@ -66,11 +66,10 @@ class DataGeneratorClassifier(keras.utils.Sequence):
         'Generates data containing batch_size samples' # X : (n_samples, *image_size, n_channels)
         X = np.empty((self.batch_size,self.nmbr_image_par_video, *self.image_size, self.n_channels))
         y = np.empty((self.batch_size), dtype=int)
-
         for i, ID in enumerate(list_IDs_temp):
-            Xi = load_video(cv2.VideoCapture('dataset/video_test.avi'))      # tous les Xi sont de longueur différente 
-            Xi = smart_resize(np.asarray(Xi), self.image_size)
-            X[i,:] = Xi                                                     # Xi longeur variable mais pas X[i,:] risque de problème de dimension
+            path = self.data_path+'/'+ID # à revérifier pour le path mais sinon cela va prendre le path de chaque image dans le folder 
+            Xi = load_video(cv2.VideoCapture(path),*self.image_size)# tous les Xi sont de longueur différente 
+            X[i,:] = Xi # Xi longeur variable mais pas X[i,:] risque de problème de dimension
 
             y[i] = self.classes.index(ID.split('/')[0])
 
